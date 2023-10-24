@@ -1,16 +1,15 @@
 # module.bedrijven.py
-from colorama import init, Fore, Back, Style
-init(convert=True)
 import functies as f
 
 
 # start applicatie
 def submenuBedrijven():
     while True:
-        print('======================================\n           [Bedrijven]\n')
-        print('1. Overzicht bedrijven')
+        print('\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n             [Bedrijven]\n')
+        print('1. Overzicht bedrijven / bedrijven.txt')
         print('2. Zoeken op naam')
         print('3. Zoeken op X, Y')
+        print('4. Uitstoot controleren')
         print('0. Terug\n')
 
         try:
@@ -20,15 +19,19 @@ def submenuBedrijven():
 
         if keuze == 1:
             f.printBedrijven()
-            input(f'{Fore.GREEN}Druk op een toets op verder te gaan...{Style.RESET_ALL}')
+            input(f'Druk op een toets op verder te gaan...')
         elif keuze == 2:
             pass
         elif keuze == 3:
-            pass
+            x = input('Breedtegraad (x): ')
+            y = input('Lengtegraad (y)')
+            print("\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n")
+            print(f.zoekBedrijvenMetXY(x, y))
+            input(f'Druk op een toets op verder te gaan...')
         elif keuze == 4:
             pass
         elif keuze == 0:
             f.startApllicatie()
         else:
-            print("\n\n\n====================================")
-            print(f'{Fore.RED}[!]ERROR - ONGELDIGE KEUZE[!]{Style.RESET_ALL}')
+            print("\n\n\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-")
+            print(f'[!]ERROR - ONGELDIGE KEUZE[!]')

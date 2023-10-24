@@ -2,7 +2,7 @@ from tabulate import tabulate
 import matplotlib.pyplot as plt
 import numpy as np
 from tqdm import tqdm
-import datetime
+import time
 import module_bedrijven as mb
 import module_meetbestand as mm
 import module_inspecteurs as mi
@@ -12,8 +12,6 @@ co2 = 1
 ch4 = 25
 no2 = 5
 nh3 = 1000
-huidige_datum = datetime.date.today()
-huidige_tijd = datetime.datetime.now().time()
 
 
 ###HOOFD MENU / start applicatie -> hier kan iederen tussen submenu's kiezen
@@ -130,18 +128,13 @@ def plotMeetgegevens():
     data = np.zeros((100, 100), dtype=float)
     plt.figure(figsize=(8, 8))
 
-    total_iterations = 100 * 100
-    pbar = tqdm(total=total_iterations, desc="Plotting", unit=" coördinaten")
-
     for i in range(0, 100):
         for j in range(0, 100):
             data[j, i] = berekenUitstoot(i, j)
             resultaat = getBedrijvenMetXY(f'{i}', f'{j}', 'Naam')
             if resultaat is not None:
+                print(f'{resultaat} = {i} , {j}')
                 plt.text(i + 3, j, f"{resultaat}", fontsize=10, color='white')
-            pbar.update(1)
-
-    pbar.close()
 
     plt.imshow(data, cmap='jet', origin='lower', extent=[0, 100, 0, 100])
     plt.colorbar()
@@ -293,30 +286,12 @@ def analyseerXY(x, y):
 
     if boolLaag1 == True and boolLaag2 == True:
         bedrijfsnaam = getBedrijvenMetXY(f'{x}', f'{y}', 'Naam')
-        if bedrijfsnaam != None:
-            return False
-        else:
-            return True
+        if bedrijfsnaam == None:
+            print(f'Er is een bedrijf op {x} , {y} gevonden. Totale uitstoot: {totaleUitstoot(x, y)}')
+
 
 def analyseerMeetbestand():
-    pbar = tqdm(total=100 * 100, desc="Analyseren", unit=" coördinaten")
-    resultaten = []
     for i in range(100):
         for j in range(100):
-            if berekenUitstoot(i, j) > 800:
-                if analyseerXY(i, j):
-                    resultaten.append((i, j))
-            pbar.update(1)
-    pbar.close()
-    print("Resultaten:")
-    for resultaat in resultaten:
-        print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-')
-        print('-=-=-=-=-=-=-=-Rapport-=-=-=-=-=-=-=-=-')
-        print('De volgende coördinaten hebben een hoge')
-        print('uitstoot en zijn niet geregistreerd in')
-        print('bedrijven.txt, deze bedrijven stoten')
-        print('illegaal teveel slechte stoffen uit.')
-        print(resultaat)
-        print(f'Datum: {huidige_datum} Tijd: {huidige_tijd}')
-        print('Uitgifte: SchoneLucht BV.')
-        print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-')
+            analyseerXY(i, j)
+

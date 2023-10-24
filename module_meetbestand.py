@@ -1,16 +1,14 @@
 # module.bedrijven.py
-from colorama import init, Fore, Back, Style
-init(convert=True)
+
 import functies as f
 
-
 # start applicatie
-def submenuBedrijven():
+
+def submenuMeetbestand():
     while True:
-        print('======================================\n           [Meetbestand]\n')
-        print('1. Overzicht bedrijven')
-        print('2. Zoeken op naam')
-        print('3. Zoeken op X, Y')
+        print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n            [Meetbestand]\n')
+        print('1. Overzichtskaart')
+        print('2. Analyse uitvoeren')
         print('0. Terug\n')
 
         try:
@@ -19,16 +17,29 @@ def submenuBedrijven():
             keuze = -1
 
         if keuze == 1:
-            f.printBedrijven()
-            input(f'{Fore.GREEN}Druk op een toets op verder te gaan...{Style.RESET_ALL}')
+            doorgaan = input(f'\nWAARSCHUWING - Het genereren van overzichtskaart kan 2 a 3 minuen duren, wilt u doorgaan? \n[Ja/Nee] ')
+            if doorgaan == 'Ja' or doorgaan == 'ja':
+                try:
+                    f.plotMeetgegevens()
+                    print(f'BERICHT - de kaart is succesvol gegenereerd.\n')
+                except:
+                    print("\n\n\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-")
+                    print(f'ERROR - Het genereren van een kaart is niet gelukt!\n')
+            else:
+                print(f'BERICHT - Het genereren van de kaart is geanulleerd.\n')
         elif keuze == 2:
-            pass
+                try:
+                    f.analyseerMeetbestand()
+                    print(f'BERICHT - het analyse rapport is gereed.\n')
+                    input(f'Druk op een toets op verder te gaan...')
+                except:
+                    print("\n\n\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-")
+                    print(f'ERROR - Er ging iets mis tijdens het genereren van het analyse rapport!\n')
+                    input(f'Druk op een toets op verder te gaan...')
         elif keuze == 3:
-            pass
-        elif keuze == 4:
             pass
         elif keuze == 0:
             f.startApllicatie()
         else:
-            print("\n\n\n====================================")
-            print(f'{Fore.RED}[!]ERROR - ONGELDIGE KEUZE[!]{Style.RESET_ALL}')
+            print("\n\n\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-")
+            print(f'ERROR - Ongeldige keuze!\n')

@@ -8,7 +8,7 @@ import functies as f
 def submenuBedrijven():
     while True:
         print('======================================\n           [Bezoeken]\n')
-        print('1. Overzicht bedrijven')
+        print('1. Overzicht bezoeken / bezoekrapporten.txt')
         print('2. Zoeken op naam')
         print('3. Zoeken op X, Y')
         print('0. Terug\n')
@@ -20,7 +20,7 @@ def submenuBedrijven():
 
         if keuze == 1:
             f.printBedrijven()
-            input(f'{Fore.GREEN}Druk op een toets op verder te gaan...{Style.RESET_ALL}')
+            input(f'Druk op een toets op verder te gaan...')
         elif keuze == 2:
             pass
         elif keuze == 3:
@@ -31,4 +31,4 @@ def submenuBedrijven():
             f.startApllicatie()
         else:
             print("\n\n\n====================================")
-            print(f'{Fore.RED}[!]ERROR - ONGELDIGE KEUZE[!]{Style.RESET_ALL}')
+            print(f'[!]ERROR - ONGELDIGE KEUZE[!]')
