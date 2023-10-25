@@ -3,9 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from tqdm import tqdm
 import datetime
-import module_bedrijven as mb
-import module_meetbestand as mm
-import module_inspecteurs as mi
+import os
 
 ###CONTANTEN:
 co2 = 1
@@ -14,44 +12,6 @@ no2 = 5
 nh3 = 1000
 huidige_datum = datetime.date.today()
 huidige_tijd = datetime.datetime.now().time()
-
-
-###HOOFD MENU / start applicatie -> hier kan iederen tussen submenu's kiezen
-def startApllicatie():
-    print("         -=[Schonelucht BV]=-")
-    while True:
-        print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n             [Hoofdmenu]\n')
-        print('1. Bedrijven')
-        print('2. Bezoekrapporten')
-        print('3. Inspecteurs')
-        print('4. Meetgegevens')
-        print('0. Afsluiten\n')
-
-        try:
-            keuze = int(input('Uw keuze : '))
-        except ValueError:
-            keuze = -1
-
-        if keuze == 1:
-            mb.submenuBedrijven()
-            break
-        elif keuze == 2:
-            pass
-        elif keuze == 3:
-            pass
-        elif keuze == 4:
-            mm.submenuMeetbestand()
-            break
-        elif keuze == 0:
-            afsluiten = input(f'\nWAARSCHUWING - Weet je zeker dat je het programma af wilt sluiten? \n[Ja/Nee] ')
-            if afsluiten == 'Ja' or afsluiten == 'ja':
-                break
-            else:
-                pass
-        else:
-            print("\n\n\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-")
-            print(f'ERROR - Ongeldige keuze!')
-
 
 ###FUNCTIE: Zoekt uitstoot (gehele rij met keywords) op basis van x en y
 def zoekGegevensXY(x, y):
@@ -211,14 +171,11 @@ def printBedrijven():
             f"{bedrijf['Contactpersoon']}"
         ])
 
-    headers = ["Code", "Naam", "Straat", "Huisnummer", "Postcode", "Breedtegraad", "Lengtegraad",
-               "Max Toegestane Uitstoot", "Boete", "Controle", "Inspectie Frequentie", "Contactpersoon"]
+    headers = ["Code", "Naam", "Straat", "Huisnr", "Postcode", "X", "Y",
+               "Max uitstoot", "Boete", "Controle", "Inspecties", "Contactpersoon"]
 
     table = tabulate(data, headers, tablefmt="fancy_grid")
-
-    print("\n\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n")
     print(table)
-    print("\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n")
 
 
 ###FUNCTIE: Zoekt een bedrijf op basis van x en y,
@@ -298,6 +255,8 @@ def analyseerXY(x, y):
         else:
             return True
 
+
+###Functie:
 def analyseerMeetbestand():
     pbar = tqdm(total=100 * 100, desc="Analyseren", unit=" coördinaten")
     resultaten = []
@@ -308,15 +267,19 @@ def analyseerMeetbestand():
                     resultaten.append((i, j))
             pbar.update(1)
     pbar.close()
+    os.system('cls')
     print("Resultaten:")
-    for resultaat in resultaten:
-        print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-')
-        print('-=-=-=-=-=-=-=-Rapport-=-=-=-=-=-=-=-=-')
+    print('-=-=-=-=-=-=-=-Rapport-=-=-=-=-=-=-=-=-\n')
+    if resultaten is not None:
         print('De volgende coördinaten hebben een hoge')
         print('uitstoot en zijn niet geregistreerd in')
         print('bedrijven.txt, deze bedrijven stoten')
         print('illegaal teveel slechte stoffen uit.')
-        print(resultaat)
-        print(f'Datum: {huidige_datum} Tijd: {huidige_tijd}')
-        print('Uitgifte: SchoneLucht BV.')
-        print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-')
+        print('Coördinaten: ')
+        for resultaat in resultaten:
+            print(f'{resultaat} - Uitstoot: {totaleUitstoot(resultaat[0], resultaat[1])}')
+    else:
+        print('Er zijn geen resultaten.')
+    print(f'\nDatum: {huidige_datum} Tijd: {huidige_tijd}')
+    print('Uitgifte: SchoneLucht BV.\n')
+    print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-')

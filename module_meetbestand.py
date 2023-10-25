@@ -1,11 +1,15 @@
 # module.bedrijven.py
-
+import os
+import sys
 import functies as f
+from colorama import Fore, Back, Style, init
+init(autoreset=True)
 
 # start applicatie
 
 def submenuMeetbestand():
     while True:
+        print(f"          {Back.YELLOW + Fore.BLACK}-=[Schonelucht BV]=-{Style.RESET_ALL}")
         print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n            [Meetbestand]\n')
         print('1. Overzichtskaart')
         print('2. Analyse uitvoeren')
@@ -17,29 +21,50 @@ def submenuMeetbestand():
             keuze = -1
 
         if keuze == 1:
-            doorgaan = input(f'\nWAARSCHUWING - Het genereren van overzichtskaart kan 2 a 3 minuen duren, wilt u doorgaan? \n[Ja/Nee] ')
+
+            doorgaan = input(
+                f'\n{Fore.YELLOW}WAARSCHUWING - Het genereren van overzichtskaart kan even duren, wilt u doorgaan? \n[Ja/Nee] {Style.RESET_ALL}')
             if doorgaan == 'Ja' or doorgaan == 'ja':
                 try:
+                    os.system('cls')
                     f.plotMeetgegevens()
-                    print(f'BERICHT - de kaart is succesvol gegenereerd.\n')
+                    print(f'{Fore.GREEN}BERICHT - de kaart is succesvol gegenereerd.{Style.RESET_ALL}\n')
+                    input(f'Druk op een toets op verder te gaan...')
+                    os.system('cls')
                 except:
-                    print("\n\n\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-")
-                    print(f'ERROR - Het genereren van een kaart is niet gelukt!\n')
+                    os.system('cls')
+                    print(f'{Fore.RED}ERROR - Het genereren van een kaart is niet gelukt!{Style.RESET_ALL}\n')
+                    input(f'Druk op een toets op verder te gaan...')
+                    os.system('cls')
             else:
-                print(f'BERICHT - Het genereren van de kaart is geanulleerd.\n')
+                os.system('cls')
+                print(f'{Fore.RED}ERROR - Het genereren van de kaart is geanulleerd.{Style.RESET_ALL}\n')
+                input(f'Druk op een toets op verder te gaan...')
+                os.system('cls')
         elif keuze == 2:
+            os.system('cls')
+            doorgaan = input(
+                f'\n{Fore.YELLOW}WAARSCHUWING - - Het analyseren kan even duren, wilt u doorgaan? \n[Ja/Nee] {Style.RESET_ALL}')
+            if doorgaan == 'Ja' or doorgaan == 'ja':
                 try:
+                    os.system('cls')
                     f.analyseerMeetbestand()
-                    print(f'BERICHT - het analyse rapport is gereed.\n')
+                    print(f'{Fore.GREEN}BERICHT - het analyse rapport is gereed.{Style.RESET_ALL}\n')
                     input(f'Druk op een toets op verder te gaan...')
+                    os.system('cls')
                 except:
-                    print("\n\n\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-")
-                    print(f'ERROR - Er ging iets mis tijdens het genereren van het analyse rapport!\n')
+                    os.system('cls')
+                    print(f'{Fore.RED}ERROR - Er ging iets mis tijdens het genereren van het analyse rapport!{Style.RESET_ALL}\n')
                     input(f'Druk op een toets op verder te gaan...')
-        elif keuze == 3:
-            pass
+                    os.system('cls')
+            else:
+                os.system('cls')
+                print(f'{Fore.RED}ERROR - Het analyseren is geanulleerd.{Style.RESET_ALL}\n')
+                input(f'Druk op een toets op verder te gaan...')
+                os.system('cls')
         elif keuze == 0:
-            f.startApllicatie()
+            os.system('python start.py')
+
         else:
-            print("\n\n\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-")
-            print(f'ERROR - Ongeldige keuze!\n')
+            os.system('cls')
+            print(f'{Fore.RED}ERROR - Ongeldige keuze!\n{Style.RESET_ALL}')

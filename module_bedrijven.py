@@ -1,15 +1,20 @@
 # module.bedrijven.py
+import os
+import sys
+
 import functies as f
+from colorama import Fore, Back, Style, init
+init(autoreset=True)
 
 
 # start applicatie
 def submenuBedrijven():
     while True:
-        print('\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n             [Bedrijven]\n')
+        print(f"          {Back.YELLOW + Fore.BLACK}-=[Schonelucht BV]=-{Style.RESET_ALL}")
+        print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n             [Bedrijven]\n')
         print('1. Overzicht bedrijven / bedrijven.txt')
-        print('2. Zoeken op naam')
-        print('3. Zoeken op X, Y')
-        print('4. Uitstoot controleren')
+        print('2. Zoeken op X, Y')
+        print('3. Zoeken op naam')
         print('0. Terug\n')
 
         try:
@@ -18,20 +23,33 @@ def submenuBedrijven():
             keuze = -1
 
         if keuze == 1:
-            f.printBedrijven()
-            input(f'Druk op een toets op verder te gaan...')
+            try:
+                os.system('cls')
+                f.printBedrijven()
+                input(f'Druk op een toets op verder te gaan...')
+                os.system('cls')
+            except:
+                os.system('cls')
+                print(f'{Fore.RED}ERROR - Er ging iets mis met het ophalen van de bedrijven!{Style.RESET_ALL}\n')
+                input(f'Druk op een toets op verder te gaan...')
+                os.system('cls')
         elif keuze == 2:
-            pass
+            try:
+                os.system('cls')
+                x = input('Breedtegraad (x): ')
+                y = input('Lengtegraad (y): ')
+                os.system('cls')
+                print(f.zoekBedrijvenMetXY(x, y))
+                input(f'Druk op een toets op verder te gaan...')
+                os.system('cls')
+            except:
+                os.system('cls')
+                print(f'{Fore.RED}ERROR - Er ging iets mis met het zoeken van bedrijven!{Style.RESET_ALL}\n')
+                input(f'Druk op een toets op verder te gaan...')
+                os.system('cls')
         elif keuze == 3:
-            x = input('Breedtegraad (x): ')
-            y = input('Lengtegraad (y)')
-            print("\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n")
-            print(f.zoekBedrijvenMetXY(x, y))
-            input(f'Druk op een toets op verder te gaan...')
-        elif keuze == 4:
             pass
         elif keuze == 0:
-            f.startApllicatie()
+            os.system('python start.py')
         else:
-            print("\n\n\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-")
-            print(f'[!]ERROR - ONGELDIGE KEUZE[!]')
+            print(f'{Fore.RED}ERROR - ONGELDIGE KEUZE\n{Style.RESET_ALL}')
