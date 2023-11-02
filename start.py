@@ -2,11 +2,12 @@ try:
     import sys
     import os
     import time
-    from colorama import Fore, Back, Style, init
-    init(autoreset=True)
     import module_bedrijven as mb
     import module_meetbestand as mm
     import module_inspecteurs as mi
+    import module_bezoeken as mbe
+    from colorama import Fore, Back, Style, init
+    init(autoreset=True)
     os.system('cls')
 except:
     print('\n\nER GING IETS MIS MET HET LADEN VAN DEPENDENCIES\n\n')
@@ -32,11 +33,11 @@ while True:
         break
     elif keuze == 2:
         os.system('cls')
-        mm.submenuMeetbestand()
+        mbe.submenuBezoeken()
         break
     elif keuze == 3:
         os.system('cls')
-        mm.submenuMeetbestand()
+        mi.submenuInspecteurs()
         break
     elif keuze == 4:
         os.system('cls')
@@ -44,7 +45,8 @@ while True:
         break
     elif keuze == 0:
         os.system('cls')
-        afsluiten = input(f'\n{Fore.YELLOW}WAARSCHUWING - Weet je zeker dat je het programma af wilt sluiten? [Ja/Nee] {Style.RESET_ALL}')
+        afsluiten = input(
+            f'\n{Fore.YELLOW}WAARSCHUWING - Weet je zeker dat je het programma af wilt sluiten? [Ja/Nee] {Style.RESET_ALL}')
         if afsluiten == 'Ja' or afsluiten == 'ja':
             os.system('cls')
             print(f'{Fore.RED}Het systeem wordt afgesloten...\n{Style.RESET_ALL}')

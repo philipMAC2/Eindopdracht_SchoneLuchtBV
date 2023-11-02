@@ -1,7 +1,6 @@
 # module.bedrijven.py
 import os
 import sys
-
 import functies as f
 from colorama import Fore, Back, Style, init
 init(autoreset=True)
@@ -14,7 +13,7 @@ def submenuBedrijven():
         print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n             [Bedrijven]\n')
         print('1. Overzicht bedrijven / bedrijven.txt')
         print('2. Zoeken op X, Y')
-        print('3. Zoeken op naam')
+        print('3. Zoeken op bedrijfscode')
         print('0. Terug\n')
 
         try:
@@ -38,8 +37,15 @@ def submenuBedrijven():
                 os.system('cls')
                 x = input('Breedtegraad (x): ')
                 y = input('Lengtegraad (y): ')
+                x = int(x)
+                y = int(y)
                 os.system('cls')
-                print(f.zoekBedrijvenMetXY(x, y))
+                f.zoekBedrijvenMetXY(x, y)
+                code = f.getBedrijvenMetXY(f'{x}', f'{y}', 'Code')
+                if code:
+                    print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n             [Bezoekrapporten]\n')
+                    code = int(code)
+                    f.zoekBezoekenBedrijf(code)
                 input(f'Druk op een toets op verder te gaan...')
                 os.system('cls')
             except:
@@ -48,8 +54,24 @@ def submenuBedrijven():
                 input(f'Druk op een toets op verder te gaan...')
                 os.system('cls')
         elif keuze == 3:
-            pass
+            try:
+                os.system('cls')
+                code = input('Bedrijfscode: ')
+                code = int(code)
+                os.system('cls')
+                f.zoekBedrijvenMetCode(code)
+                print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n             [Bezoekrapporten]\n')
+                f.zoekBezoekenBedrijf(code)
+                input(f'Druk op een toets op verder te gaan...')
+                os.system('cls')
+            except:
+                os.system('cls')
+                print(f'{Fore.RED}ERROR - Er ging iets mis met het zoeken van bedrijven!{Style.RESET_ALL}\n')
+                input(f'Druk op een toets op verder te gaan...')
+                os.system('cls')
         elif keuze == 0:
             os.system('python start.py')
+            sys.exit()
         else:
+            os.system('cls')
             print(f'{Fore.RED}ERROR - ONGELDIGE KEUZE\n{Style.RESET_ALL}')

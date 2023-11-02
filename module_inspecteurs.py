@@ -1,68 +1,59 @@
-# module_inspecteurs.py
-
-# constanten
-INSPECTEURSBESTAND = 'C:\\Users\\gorgp00\\Documents\\PythonEindopdracht\\Eindopdracht\\inspectors.txt'
-
-
-lijst_inspecteurs = []   # lijst met alle inspecteur objecten
-
-def lees_inspecteurs() :
-    """Inlezen van het tekstbestand met de inspecteursgegevens"""
-    try :
-        with open(INSPECTEURSBESTAND, mode='r') as inspecteurs :
-            for record in inspecteurs :
-                code = record[0:3]
-                naam = record[4:24]
-                standplaats = record[24:44]
-                Inspecteur(code, naam, standplaats)
-        print('Bestand', INSPECTEURSBESTAND, 'ingelezen')
-        return 0
-    except FileNotFoundError :
-        print('Bestand', INSPECTEURSBESTAND, 'niet gevonden')
-        return 1
+# module.inspecteurs.py
+import os
+import sys
+from colorama import init, Fore, Back, Style
+init(convert=True)
+import functies as f
 
 
-def toon_inspecteurs() :
-    """Maak een overzicht van alle inspecteursgegevens"""
-    print("        Overzicht inspecteurs")
-    print("        =====================\n")
-    print("Code Naam                 Standplaats")
-    print("---- -------------------- --------------------")
-        
-    for inspecteur in lijst_inspecteurs :
-        inspecteur.toonGegevens()
+# start applicatie
+def submenuInspecteurs():
+    while True:
+        print(f"          {Back.YELLOW + Fore.BLACK}-=[Schonelucht BV]=-{Style.RESET_ALL}")
+        print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n             [Inspecteurs]\n')
+        print('1. Overzicht inspecteurs / inspecteurs.txt')
+        print('2. Zoeken op code')
+        print('0. Terug\n')
 
+        try:
+            keuze = int(input('Uw keuze : '))
+        except ValueError:
+            keuze = -1
 
-class Inspecteur :
-    def __init__(self, code, naam='', standplaats='') :
-        global lijst_inspecteurs
-
-        self.__code = code
-        self.__naam = naam
-        self.__standplaats = standplaats
-        self.__bezoekrapporten = []
-        lijst_inspecteurs.append(self)
-
-    def getCode(self) :
-        return self.__code
-
-    def setCode(self, code) :
-        self.__code = code
-
-    def getNaam(self) :
-        return self.__naam
-
-    def setNaam(self, naam) :
-        self.__naam = naam
-
-    def getStandplaats(self) :
-        return self.__standplaats
-
-    def setStandplaats(self, standplaats) :
-        self.__standplaats = standplaats
-
-    def addBezoekrapport(self, bezoekrapport) :
-        self.__bezoekrapporten.append(bezoekrapport)
-
-    def toonGegevens(self) :
-        print(self.__code + ' ', self.__naam, self.__standplaats)
+        if keuze == 1:
+            try:
+                os.system('cls')
+                f.printInspecteurs()
+                input(f'Druk op een toets op verder te gaan...')
+                os.system('cls')
+            except:
+                os.system('cls')
+                print(f'{Fore.RED}ERROR - Er ging iets mis met het ophalen van de inspecteurs!{Style.RESET_ALL}\n')
+                input(f'Druk op een toets op verder te gaan...')
+                os.system('cls')
+        elif keuze == 2:
+            try:
+                os.system('cls')
+                code = input('Inspecteurscode: ')
+                code = int(code)
+                print(f'{Fore.YELLOW}Druk op enter als je geen min en of max datum in wilt vullen{Fore.RESET}')
+                min_datum = input('Minimale bezoeksdatum (dd-mm-yyyy): ')
+                max_datum = input('Maximale bezoeksdatum (dd-mm-yyyy): ')
+                print(f'{min_datum} - {max_datum}')
+                os.system('cls')
+                f.zoekInspecteurMetCode(code)
+                print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n             [Bezoekrapporten]\n')
+                f.zoekBezoekenInspecteur(code, min_datum, max_datum)
+                input(f'Druk op een toets op verder te gaan...')
+                os.system('cls')
+            except:
+                os.system('cls')
+                print(f'{Fore.RED}ERROR - Er ging iets mis met het zoeken van inspecteurs, zorg dat je gegeven input voldoet aan de voorwaarden!{Style.RESET_ALL}\n')
+                input(f'Druk op een toets op verder te gaan...')
+                os.system('cls')
+        elif keuze == 0:
+            os.system('python start.py')
+            sys.exit()
+        else:
+            os.system('cls')
+            print(f'{Fore.RED}ERROR - ONGELDIGE KEUZE\n{Style.RESET_ALL}')

@@ -1,34 +1,38 @@
 # module.bezoeken.py
+import os
+import sys
 from colorama import init, Fore, Back, Style
 init(convert=True)
 import functies as f
 
 
 # start applicatie
-def submenuBedrijven():
+def submenuBezoeken():
     while True:
-        print('======================================\n           [Bezoeken]\n')
+        print(f"          {Back.YELLOW + Fore.BLACK}-=[Schonelucht BV]=-{Style.RESET_ALL}")
+        print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n             [Bezoeken]\n')
         print('1. Overzicht bezoeken / bezoekrapporten.txt')
-        print('2. Zoeken op naam')
-        print('3. Zoeken op X, Y')
+        print('   Voor zoeken -> bedrijven on inspecteurs.')
         print('0. Terug\n')
 
         try:
             keuze = int(input('Uw keuze : '))
         except ValueError:
             keuze = -1
-
         if keuze == 1:
-            f.printBedrijven()
-            input(f'Druk op een toets op verder te gaan...')
-        elif keuze == 2:
-            pass
-        elif keuze == 3:
-            pass
-        elif keuze == 4:
-            pass
+            try:
+                os.system('cls')
+                f.printBezoeken()
+                input(f'Druk op een toets op verder te gaan...')
+                os.system('cls')
+            except:
+                os.system('cls')
+                print(f'{Fore.RED}ERROR - Er ging iets mis met het ophalen van de bezoekrapporten!{Style.RESET_ALL}\n')
+                input(f'Druk op een toets op verder te gaan...')
+                os.system('cls')
         elif keuze == 0:
-            f.startApllicatie()
+            os.system('python start.py')
+            sys.exit()
         else:
-            print("\n\n\n====================================")
-            print(f'[!]ERROR - ONGELDIGE KEUZE[!]')
+            os.system('cls')
+            print(f'{Fore.RED}ERROR - ONGELDIGE KEUZE\n{Style.RESET_ALL}')

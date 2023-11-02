@@ -1,33 +1,24 @@
-import functies as f
-import datetime
+# teste
 import numpy as np
-from tqdm import tqdm
-import time
 import matplotlib.pyplot as plt
-
-import curses
-import time
+import functies as f
+from tqdm import tqdm
+from tabulate import tabulate
 from colorama import Fore, Back, Style, init
+
+import module_inspecteurs
+
 init(autoreset=True)
+import module_bedrijven as mb
 
+# print(f.totaleUitstoot(10,90))
+# f.printBezoeken()
+# f.zoekInspecteurMetCode(1)
+# f.zoekBezoekenInspecteur(1)
 
-def main(stdscr):
-    curses.curs_set(0)
-    curses.start_color()
-    curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_YELLOW)
+#mb.submenuBedrijven()
+# print(f.huidige_datum)
+# print(f.huidige_tijd)
+# f.zoekBezoekenInspecteur(2, None, None)2
 
-    while True:
-        stdscr.clear()
-        height, width = stdscr.getmaxyx()
-        stdscr.addstr(0, 0, " " * width, curses.color_pair(1))
-        center_text = "SchoneLucht BV"
-        center_x = (width - len(center_text)) // 2
-        stdscr.addstr(0, center_x, center_text, curses.color_pair(1) | curses.A_BOLD)
-
-        stdscr.refresh()
-        time.sleep(1)
-
-
-curses.wrapper(main)
-
-
+module_inspecteurs.submenuInspecteurs()

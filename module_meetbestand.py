@@ -64,7 +64,7 @@ def submenuMeetbestand():
                 os.system('cls')
         elif keuze == 0:
             os.system('python start.py')
-
+            sys.exit()
         else:
             os.system('cls')
             print(f'{Fore.RED}ERROR - Ongeldige keuze!\n{Style.RESET_ALL}')
