@@ -16,11 +16,13 @@ def gemiddeldeBerekenen():
     for i in range(100):
         for j in range(100):
             totaal = totaal + f.berekenUitstoot(i,j)
-    return totaal
+
+    return totaal / (100*100)
 
 #
 # ########################################
-# print(gemiddeldeBerekenen())
+print('Gemiddelde uitstoot:')
+print(gemiddeldeBerekenen())
 
 print('SHELL')
 print(nagaanWaardes(2,2)) ## SHELL
@@ -34,8 +36,8 @@ print('PHILIPS')
 print(nagaanWaardes(70,90)) ## Philips
 print('TNO')
 print(nagaanWaardes(80,20)) ## TNO
-print('TNO')
+print('GEEN BEDRIJF')
 print(nagaanWaardes(60,20)) ## NIKS
-print('TNO')
+print('GEEN BEDRIJF')
 print(nagaanWaardes(70,20)) ## NIKS
 

@@ -5,7 +5,6 @@ from tqdm import tqdm
 from datetime import datetime
 import os
 from colorama import Fore, Back, Style, init
-
 init(autoreset=True)
 
 ###CONTANTEN:
@@ -13,10 +12,9 @@ co2 = 1
 ch4 = 25
 no2 = 5
 nh3 = 1000
-huidige_datum = datetime.today()
-huidige_datum = huidige_datum.strftime('%d-%m-%Y')
-huidige_tijd = datetime.now().time()
-huidige_tijd = huidige_tijd.strftime('%H:%M')
+huidige_datum = datetime.today().strftime('%d-%m-%Y')
+huidige_tijd = datetime.now().time().strftime('%H:%M')
+gemiddelde_uitstoot = 531.4246449999958
 
 GASSENBESTAND = 'gassen.csv'
 boette_constante = 10
@@ -156,32 +154,24 @@ def printBedrijven():
     table = tabulate(data, headers, tablefmt="fancy_grid")
     print(table)
 
-def zoekBedrijvenMetXY(x, y):
-    """Print bedrijf in tabel op een gegeven x en y"""
+def zoekBedrijvenXYCode(x=None, y=None, code=None):
+    """Zoek en print bedrijf(en) in een tabel op basis van x en y-coördinaten of bedrijfscode."""
     bedrijven_data = zoekBedrijven()
     data = []
+
     for bedrijf in bedrijven_data:
         i = int(bedrijf['Breedtegraad'])
         j = int(bedrijf['Lengtegraad'])
+        bedrijf_code = int(bedrijf['Code'])
 
-        if x == i and y == j:
-            totale_uitstoot = totaleUitstoot(int(bedrijf['Breedtegraad']), int(bedrijf['Lengtegraad']))
+        if (x is not None and y is not None and x == i and y == j) or (code is not None and code == bedrijf_code):
+            totale_uitstoot = totaleUitstoot(i, j)
             uitstoot_ratio = f"{Fore.GREEN}{totale_uitstoot} / {bedrijf['Max Toegestane Uitstoot']}{Style.RESET_ALL}" if totale_uitstoot <= int(
-                bedrijf[
-                    'Max Toegestane Uitstoot']) else f"{Fore.RED}{totale_uitstoot} / {bedrijf['Max Toegestane Uitstoot']}{Style.RESET_ALL}"
-            boette = berekenBoette(int(totale_uitstoot), int(bedrijf['Max Toegestane Uitstoot']))
-            if boette == 0:
-                boette = f"{Fore.GREEN}Geen boette{Fore.RESET}"
-            else:
-                boette = f"{Fore.RED}€{boette}{Fore.RESET}"
-            if totale_uitstoot >= int(bedrijf['Max Toegestane Uitstoot']):
-                controle = f"{Fore.RED}Uitvoeren{Fore.RESET}"
-            else:
-                controle = f"{Fore.GREEN}Niet uitvoeren{Fore.RESET}"
-            if bedrijf['Contactpersoon'] == "":
-                contact = f"{Fore.YELLOW}Onbekend{Fore.RESET}"
-            else:
-                contact = bedrijf['Contactpersoon']
+                bedrijf['Max Toegestane Uitstoot']) else f"{Fore.RED}{totale_uitstoot} / {bedrijf['Max Toegestane Uitstoot']}{Style.RESET_ALL}"
+            boete = berekenBoette(int(totale_uitstoot), int(bedrijf['Max Toegestane Uitstoot']))
+            boete_text = f"{Fore.GREEN}Geen boete{Fore.RESET}" if boete == 0 else f"{Fore.RED}€{boete}{Fore.RESET}"
+            controle = f"{Fore.RED}Uitvoeren{Fore.RESET}" if totale_uitstoot >= int(bedrijf['Max Toegestane Uitstoot']) else f"{Fore.GREEN}Niet uitvoeren{Fore.RESET}"
+            contact = f"{Fore.YELLOW}Onbekend{Fore.RESET}" if bedrijf['Contactpersoon'] == "" else bedrijf['Contactpersoon']
 
             data.append([
                 f"{bedrijf['Code']}",
@@ -192,11 +182,12 @@ def zoekBedrijvenMetXY(x, y):
                 f"{bedrijf['Breedtegraad']}",
                 f"{bedrijf['Lengtegraad']}",
                 uitstoot_ratio,
-                boette,
+                boete_text,
                 controle,
                 f"{bedrijf['Inspectie Frequentie']}",
                 contact
             ])
+
     if data:
         headers = ["Code", "Naam", "Straat", "Huisnr", "Postcode", "X", "Y",
                    "Uitstoot", "Boete", "Controle", "Inspecties", "Contactpersoon"]
@@ -204,58 +195,10 @@ def zoekBedrijvenMetXY(x, y):
         table = tabulate(data, headers, tablefmt="fancy_grid")
         print(table)
     else:
-        print(f'Er is geen bedrijf gevonden op {x},{y}')
-
-def zoekBedrijvenMetCode(code):
-    """Zoekt en print bedrijf in tabel met een gegeven bedrijfscode"""
-    bedrijven_data = zoekBedrijven()
-    data = []
-    for bedrijf in bedrijven_data:
-        i = int(bedrijf['Code'])
-
-        if i == code:
-            x = int(bedrijf['Breedtegraad'])
-            y = int(bedrijf['Lengtegraad'])
-            totale_uitstoot = totaleUitstoot(int(bedrijf['Breedtegraad']), int(bedrijf['Lengtegraad']))
-            uitstoot_ratio = f"{Fore.GREEN}{totale_uitstoot} / {bedrijf['Max Toegestane Uitstoot']}{Style.RESET_ALL}" if totale_uitstoot <= int(
-                bedrijf[
-                    'Max Toegestane Uitstoot']) else f"{Fore.RED}{totale_uitstoot} / {bedrijf['Max Toegestane Uitstoot']}{Style.RESET_ALL}"
-            boette = berekenBoette(int(totale_uitstoot), int(bedrijf['Max Toegestane Uitstoot']))
-            if boette == 0:
-                boette = f"{Fore.GREEN}Geen boette{Fore.RESET}"
-            else:
-                boette = f"{Fore.RED}€{boette}{Fore.RESET}"
-            if totale_uitstoot >= int(bedrijf['Max Toegestane Uitstoot']):
-                controle = f"{Fore.RED}Uitvoeren{Fore.RESET}"
-            else:
-                controle = f"{Fore.GREEN}Niet uitvoeren{Fore.RESET}"
-            if bedrijf['Contactpersoon'] == "":
-                contact = f"{Fore.YELLOW}Onbekend{Fore.RESET}"
-            else:
-                contact = bedrijf['Contactpersoon']
-
-            data.append([
-                f"{bedrijf['Code']}",
-                f"{bedrijf['Naam']}",
-                f"{bedrijf['Straat']}",
-                f"{bedrijf['Huisnummer']}",
-                f"{bedrijf['Postcode']}",
-                f"{bedrijf['Breedtegraad']}",
-                f"{bedrijf['Lengtegraad']}",
-                uitstoot_ratio,
-                boette,
-                controle,
-                f"{bedrijf['Inspectie Frequentie']}",
-                contact
-            ])
-    if data:
-        headers = ["Code", "Naam", "Straat", "Huisnr", "Postcode", "X", "Y",
-                   "Uitstoot", "Boete", "Controle", "Inspecties", "Contactpersoon"]
-
-        table = tabulate(data, headers, tablefmt="fancy_grid")
-        print(table)
-    else:
-        print(f'Er is geen bedrijf gevonden met code {code}')
+        if x is not None and y is not None:
+            print(f'Geen bedrijf gevonden op {x}, {y}')
+        elif code is not None:
+            print(f'Geen bedrijf gevonden met code {code}')
 
 def getBedrijvenMetXY(x, y, zoekterm):
     """Zoekt een gegeven zoekterm van een bedrijf op basis van x en y"""
@@ -540,7 +483,7 @@ def analyseerMeetbestand():
     uitstootResultaten = []
     for i in range(2, 98):
         for j in range(2, 98):
-            if gassen[i, j] > 600:
+            if gassen[i, j] > gemiddelde_uitstoot:
                 if analyseerXY(i, j):
                     resultaten.append((i, j))
                 if analyseerUitstoot(i, j):
@@ -549,7 +492,7 @@ def analyseerMeetbestand():
     pbar.close()
     os.system('cls')
     print("Resultaten:")
-    print('-=-=-=-=-=-=-=-Rapport-=-=-=-=-=-=-=-=-\n')
+    print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-Rapport-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n')
     if resultaten is not None:
         print('De volgende coördinaten hebben een hoge')
         print('uitstoot en zijn niet geregistreerd in')
@@ -572,4 +515,4 @@ def analyseerMeetbestand():
         print('Er zijn geen resultaten.')
     print(f'\nDatum: {huidige_datum} Tijd: {huidige_tijd}')
     print('Uitgifte: SchoneLucht BV.\n')
-    print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-')
+    print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-')

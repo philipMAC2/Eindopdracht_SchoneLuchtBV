@@ -5,7 +5,6 @@ import functies as f
 from colorama import Fore, Back, Style, init
 init(autoreset=True)
 
-
 # start applicatie
 def submenuBedrijven():
     while True:
@@ -40,7 +39,7 @@ def submenuBedrijven():
                 x = int(x)
                 y = int(y)
                 os.system('cls')
-                f.zoekBedrijvenMetXY(x, y)
+                f.zoekBedrijvenXYCode(x=x, y=y)
                 code = f.getBedrijvenMetXY(f'{x}', f'{y}', 'Code')
                 if code:
                     print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n             [Bezoekrapporten]\n')
@@ -59,7 +58,7 @@ def submenuBedrijven():
                 code = input('Bedrijfscode: ')
                 code = int(code)
                 os.system('cls')
-                f.zoekBedrijvenMetCode(code)
+                f.zoekBedrijvenXYCode(code=code)
                 print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n             [Bezoekrapporten]\n')
                 f.zoekBezoekenBedrijf(code)
                 input(f'Druk op een toets op verder te gaan...')

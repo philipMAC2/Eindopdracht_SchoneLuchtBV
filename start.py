@@ -28,21 +28,33 @@ while True:
         keuze = -1
 
     if keuze == 1:
-        os.system('cls')
-        mb.submenuBedrijven()
-        break
+        try:
+            os.system('cls')
+            mb.submenuBedrijven()
+            break
+        except:
+            print(f"{Fore.RED}ERROR - module_bedrijven is niet bereikbaar{Style.RESET_ALL}")
     elif keuze == 2:
-        os.system('cls')
-        mbe.submenuBezoeken()
-        break
+        try:
+            os.system('cls')
+            mbe.submenuBezoeken()
+            break
+        except:
+            print(f"{Fore.RED}ERROR - module_bezoeken is niet bereikbaar{Style.RESET_ALL}")
     elif keuze == 3:
-        os.system('cls')
-        mi.submenuInspecteurs()
-        break
+        try:
+            os.system('cls')
+            mi.submenuInspecteurs()
+            break
+        except:
+            print(f"{Fore.RED}ERROR - module_inspecteurs is niet bereikbaar{Style.RESET_ALL}")
     elif keuze == 4:
-        os.system('cls')
-        mm.submenuMeetbestand()
-        break
+        try:
+            os.system('cls')
+            mm.submenuMeetbestand()
+            break
+        except:
+            print(f"{Fore.RED}ERROR - module_meetbestand is niet bereikbaar{Style.RESET_ALL}")
     elif keuze == 0:
         os.system('cls')
         afsluiten = input(
@@ -53,6 +65,7 @@ while True:
             time.sleep(2)
             os.system('cls')
             print(f'{Fore.RED}[Systeem afgesloten]\n{Style.RESET_ALL}')
+            break
             sys.exit()
         else:
             os.system('cls')
