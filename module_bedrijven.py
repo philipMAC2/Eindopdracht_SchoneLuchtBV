@@ -5,7 +5,6 @@ import functies as f
 from colorama import Fore, Back, Style, init
 init(autoreset=True)
 
-# start applicatie
 def submenuBedrijven():
     while True:
         print(f"          {Back.YELLOW + Fore.BLACK}-=[Schonelucht BV]=-{Style.RESET_ALL}")
@@ -69,7 +68,7 @@ def submenuBedrijven():
                 input(f'Druk op een toets op verder te gaan...')
                 os.system('cls')
         elif keuze == 0:
-            os.system('python start.py')
+            os.system('cls')
             sys.exit()
         else:
             os.system('cls')

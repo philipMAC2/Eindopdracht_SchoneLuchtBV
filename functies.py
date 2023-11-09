@@ -17,7 +17,7 @@ huidige_tijd = datetime.now().time().strftime('%H:%M')
 gemiddelde_uitstoot = 531.4246449999958
 
 GASSENBESTAND = 'gassen.csv'
-boette_constante = 10
+boette_constante = 5
 
 #####################################################################################################################
 #########################UITSTOOTBEREKENEN###########################################################################
@@ -55,7 +55,7 @@ def berekenLaag2Uitstoot(x, y):
     y_range = slice(max(0, y - 2), min(100, y + 3))
 
     uitstoot = gassen[x_range, y_range]
-    uitstoot[x - x_range.start, y - y_range.start] = 0  # Uitsluiten de middelste cel
+    uitstoot[x - x_range.start, y - y_range.start] = 0
     uitstoot[x - x_range.start - 1:x - x_range.start + 2, y - y_range.start - 1:y - y_range.start + 2] = 0
 
     totaal_laag2 = np.sum(uitstoot)

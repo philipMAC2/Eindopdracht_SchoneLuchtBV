@@ -6,13 +6,13 @@ try:
     import module_meetbestand as mm
     import module_inspecteurs as mi
     import module_bezoeken as mbe
+    import functies as f
     from colorama import Fore, Back, Style, init
     init(autoreset=True)
     os.system('cls')
 except:
     print('\n\nER GING IETS MIS MET HET LADEN VAN DEPENDENCIES\n\n')
 
-# start.py
 while True:
     print(f"          {Back.YELLOW + Fore.BLACK}-=[Schonelucht BV]=-{Style.RESET_ALL}")
     print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n             [Hoofdmenu]\n')
@@ -31,30 +31,26 @@ while True:
         try:
             os.system('cls')
             mb.submenuBedrijven()
-            break
         except:
-            print(f"{Fore.RED}ERROR - module_bedrijven is niet bereikbaar{Style.RESET_ALL}")
+            os.system('cls')
     elif keuze == 2:
         try:
             os.system('cls')
             mbe.submenuBezoeken()
-            break
         except:
-            print(f"{Fore.RED}ERROR - module_bezoeken is niet bereikbaar{Style.RESET_ALL}")
+            os.system('cls')
     elif keuze == 3:
         try:
             os.system('cls')
             mi.submenuInspecteurs()
-            break
         except:
-            print(f"{Fore.RED}ERROR - module_inspecteurs is niet bereikbaar{Style.RESET_ALL}")
+            os.system('cls')
     elif keuze == 4:
         try:
             os.system('cls')
             mm.submenuMeetbestand()
-            break
         except:
-            print(f"{Fore.RED}ERROR - module_meetbestand is niet bereikbaar{Style.RESET_ALL}")
+            os.system('cls')
     elif keuze == 0:
         os.system('cls')
         afsluiten = input(
@@ -65,7 +61,6 @@ while True:
             time.sleep(2)
             os.system('cls')
             print(f'{Fore.RED}[Systeem afgesloten]\n{Style.RESET_ALL}')
-            break
             sys.exit()
         else:
             os.system('cls')
