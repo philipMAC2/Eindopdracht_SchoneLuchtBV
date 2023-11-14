@@ -11,7 +11,7 @@ try:
     init(autoreset=True)
     os.system('cls')
 except:
-    print('\n\nER GING IETS MIS MET HET LADEN VAN DEPENDENCIES\n\n')
+    print('\n\nER GING IETS MIS MET HET LADEN VAN DEPENDENCIES, LEES README.TXT EN REQUIREMENTS.TXT!\n\n')
 
 while True:
     print(f"          {Back.YELLOW + Fore.BLACK}-=[Schonelucht BV]=-{Style.RESET_ALL}")

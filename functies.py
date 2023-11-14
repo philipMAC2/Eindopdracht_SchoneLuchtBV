@@ -5,6 +5,7 @@ from tqdm import tqdm
 from datetime import datetime
 import os
 from colorama import Fore, Back, Style, init
+
 init(autoreset=True)
 
 ###CONTANTEN:
@@ -19,6 +20,7 @@ gemiddelde_uitstoot = 531.4246449999958
 GASSENBESTAND = 'gassen.csv'
 boette_constante = 5
 
+
 #####################################################################################################################
 #########################UITSTOOTBEREKENEN###########################################################################
 #####################################################################################################################
@@ -32,10 +34,12 @@ def lees_gassen():
     gassen = gasarray1 * 1 + gasarray2 * 25 + gasarray3 * 5 + gasarray4 * 1000
     return gassen
 
+
 def berekenUitstoot(x, y):
     """Berekent de uitstoot van een x en y waarde -> roept lees_gassen() aan om de uitsoot te returnen."""
     gassen = lees_gassen()
     return gassen[x, y]
+
 
 def berekenLaag1Uitstoot(x, y):
     """Berekent de uitstoot van laag1"""
@@ -47,6 +51,7 @@ def berekenLaag1Uitstoot(x, y):
     totaal_laag1 = np.sum(uitstoot) - gassen[x, y]
     totaal_laag1 *= 0.5
     return totaal_laag1
+
 
 def berekenLaag2Uitstoot(x, y):
     """Berekent de uitstoot van laag2"""
@@ -61,6 +66,7 @@ def berekenLaag2Uitstoot(x, y):
     totaal_laag2 = np.sum(uitstoot)
     totaal_laag2 *= 0.25
     return totaal_laag2
+
 
 def totaleUitstoot(x, y):
     """Berekent de totale uitstoot van een bedrijf, telt uitstoot midden, laag1 en laag2 bij elkaar op."""
@@ -110,6 +116,7 @@ def zoekBedrijven():
                 bedrijven.append(bedrijf)
     return bedrijven
 
+
 def printBedrijven():
     """Print alle bedrijven in een tabel, berekent de boette, uitstoot / overschreiden van uitstoot."""
     bedrijven_data = zoekBedrijven()
@@ -154,6 +161,7 @@ def printBedrijven():
     table = tabulate(data, headers, tablefmt="fancy_grid")
     print(table)
 
+
 def zoekBedrijvenXYCode(x=None, y=None, code=None):
     """Zoek en print bedrijf(en) in een tabel op basis van x en y-coördinaten of bedrijfscode."""
     bedrijven_data = zoekBedrijven()
@@ -167,11 +175,14 @@ def zoekBedrijvenXYCode(x=None, y=None, code=None):
         if (x is not None and y is not None and x == i and y == j) or (code is not None and code == bedrijf_code):
             totale_uitstoot = totaleUitstoot(i, j)
             uitstoot_ratio = f"{Fore.GREEN}{totale_uitstoot} / {bedrijf['Max Toegestane Uitstoot']}{Style.RESET_ALL}" if totale_uitstoot <= int(
-                bedrijf['Max Toegestane Uitstoot']) else f"{Fore.RED}{totale_uitstoot} / {bedrijf['Max Toegestane Uitstoot']}{Style.RESET_ALL}"
+                bedrijf[
+                    'Max Toegestane Uitstoot']) else f"{Fore.RED}{totale_uitstoot} / {bedrijf['Max Toegestane Uitstoot']}{Style.RESET_ALL}"
             boete = berekenBoette(int(totale_uitstoot), int(bedrijf['Max Toegestane Uitstoot']))
             boete_text = f"{Fore.GREEN}Geen boete{Fore.RESET}" if boete == 0 else f"{Fore.RED}€{boete}{Fore.RESET}"
-            controle = f"{Fore.RED}Uitvoeren{Fore.RESET}" if totale_uitstoot >= int(bedrijf['Max Toegestane Uitstoot']) else f"{Fore.GREEN}Niet uitvoeren{Fore.RESET}"
-            contact = f"{Fore.YELLOW}Onbekend{Fore.RESET}" if bedrijf['Contactpersoon'] == "" else bedrijf['Contactpersoon']
+            controle = f"{Fore.RED}Uitvoeren{Fore.RESET}" if totale_uitstoot >= int(
+                bedrijf['Max Toegestane Uitstoot']) else f"{Fore.GREEN}Niet uitvoeren{Fore.RESET}"
+            contact = f"{Fore.YELLOW}Onbekend{Fore.RESET}" if bedrijf['Contactpersoon'] == "" else bedrijf[
+                'Contactpersoon']
 
             data.append([
                 f"{bedrijf['Code']}",
@@ -200,6 +211,7 @@ def zoekBedrijvenXYCode(x=None, y=None, code=None):
         elif code is not None:
             print(f'Geen bedrijf gevonden met code {code}')
 
+
 def getBedrijvenMetXY(x, y, zoekterm):
     """Zoekt een gegeven zoekterm van een bedrijf op basis van x en y"""
     bedrijven = zoekBedrijven()
@@ -212,6 +224,7 @@ def getBedrijvenMetXY(x, y, zoekterm):
             break
     return resultaat
 
+
 def getBedrijvenMetCode(code, zoekterm):
     """Zoekt een bepaalde zoekterm in bedrijven met een gegeven bedrijfscode"""
     bedrijven = zoekBedrijven()
@@ -223,6 +236,7 @@ def getBedrijvenMetCode(code, zoekterm):
             break
     return resultaat
 
+
 def berekenBoette(uitstoot, maxuitstoot):
     """Berekent de boette"""
     overschreiding = uitstoot - maxuitstoot
@@ -233,6 +247,7 @@ def berekenBoette(uitstoot, maxuitstoot):
         return afgerond_boette
     else:
         return 0
+
 
 #####################################################################################################################
 #########################BEZOEKRAPPORTEN#############################################################################
@@ -261,6 +276,7 @@ def zoekBezoeken():
                 bezoeken.append(bezoek)
     return bezoeken
 
+
 def printBezoeken():
     """Print bezoeken in een tabel"""
     bezoeken_data = zoekBezoeken()
@@ -278,10 +294,12 @@ def printBezoeken():
             f"{bezoek['Status']}",
             f"{bezoek['Opmerkingen']}",
         ])
-    headers = ["Inspecteur", "Inspecteurscode", "Bedrijfsnaam", "Bedrijfscode", "Bezoekdatum", "Rapport datum", "Status", "Opmerkingen"]
+    headers = ["Inspecteur", "Inspecteurscode", "Bedrijfsnaam", "Bedrijfscode", "Bezoekdatum", "Rapport datum",
+               "Status", "Opmerkingen"]
     sorted_data = sorted(data, key=lambda x: tuple(reversed(x[4].split('-'))), reverse=True)
     table = tabulate(sorted_data, headers, tablefmt="fancy_grid")
     print(table)
+
 
 def zoekBezoekenBedrijf(code):
     """Zoekt bezoeken voor een bedrijf en print in tabel doormiddel van een bedrijfscode"""
@@ -309,6 +327,7 @@ def zoekBezoekenBedrijf(code):
         print(table)
     else:
         print(f'Dit bedrijf heeft geen bezoeken.')
+
 
 def zoekBezoekenInspecteur(inspecteurscode, min_datum, max_datum):
     """Zoekt bezoeken en print in tabel doormiddel van inspecteurscode en bezoekdatumbereik (dd-mm-yyyy) als string!"""
@@ -349,6 +368,7 @@ def zoekBezoekenInspecteur(inspecteurscode, min_datum, max_datum):
     else:
         print(f'Geen bezoeken gevonden voor inspecteurscode {inspecteurscode} binnen het opgegeven datumbereik')
 
+
 #####################################################################################################################
 #########################INSPECTEURS#################################################################################
 #####################################################################################################################
@@ -370,6 +390,7 @@ def zoekInspecteurs():
                 inspecteurs.append(bezoek)
     return inspecteurs
 
+
 def printInspecteurs():
     """Print alle data uit inspecteurs.txt uit in een tabel"""
     inspecteurs_data = zoekInspecteurs()
@@ -383,6 +404,7 @@ def printInspecteurs():
     headers = ["Inspecteurscode", "Naam", "Plaats"]
     table = tabulate(data, headers, tablefmt="fancy_grid")
     print(table)
+
 
 def zoekInspecteurMetCode(code):
     """Zoekt een inspecteur op basis van inspecteur code, hierna print hij een tabel met de vonden resultaten"""
@@ -403,6 +425,7 @@ def zoekInspecteurMetCode(code):
         print(table)
     else:
         print(f'Er is geen inspecteur gevonden met code {code}')
+
 
 def getInspecteur(inspecteurCode, zoekterm):
     """Verkrijgt data doormiddel van code en zoekterm, gebruik: Inspecteurscode, Naam of Plaats als zoekterm."""
@@ -442,6 +465,7 @@ def plotMeetgegevens():
     plt.title('Kaart')
     plt.show()
 
+
 def analyseerXY(x, y):
     """Analyseert elke mogelijke coordinaat. Als laag 1 alles hetzelfde is EN laag 2 alles hetselfde is word er true gegeven (dus het is een bedrijf) of false ( geen bedrijf). Vervolgens word er op de coordinaten gezocht waar een bedrijf zit dus waar true is. Als hier een bedrijf gevonden is word er false gegeven. Als er dus een bedrijf gedetecteert is doormiddel van laag1 en laag2 EN geen bedrijf is gevonden in het bedrijven bestand met die cooridnaten word er true gegeven, zo word het niet bestaande bedrijf gevonden."""
     gassen = lees_gassen()
@@ -462,6 +486,7 @@ def analyseerXY(x, y):
                 return True
     return False
 
+
 def analyseerUitstoot(x, y):
     """Checkt of de maximum uitstoot is overschreiden"""
     bedrijfsnaam = getBedrijvenMetXY(f'{x}', f'{y}', 'Naam')
@@ -476,11 +501,17 @@ def analyseerUitstoot(x, y):
         return False
 
 def analyseerMeetbestand():
-    """Print de gemeten informatie in een soort van rapport."""
+    """Schrijf de gemeten informatie naar een rapportbestand en print het ook naar de console."""
     gassen = lees_gassen()
     pbar = tqdm(total=96 * 96, desc="Analyseren", unit=" coördinaten")
     resultaten = []
     uitstootResultaten = []
+
+    # Zorg ervoor dat huidige_datum en huidige_tijd correct zijn geïnitialiseerd
+    huidige_datum = datetime.now().strftime("%Y-%m-%d")
+    huidige_tijd = datetime.now().strftime("%H-%M-%S")
+    rapport_naam = f"analyserapporten/{huidige_datum}_{huidige_tijd}_rapport.txt"
+
     for i in range(2, 98):
         for j in range(2, 98):
             if gassen[i, j] > gemiddelde_uitstoot:
@@ -489,30 +520,68 @@ def analyseerMeetbestand():
                 if analyseerUitstoot(i, j):
                     uitstootResultaten.append((i, j))
             pbar.update(1)
+
     pbar.close()
     os.system('cls')
-    print("Resultaten:")
-    print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-Rapport-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n')
-    if resultaten is not None:
-        print('De volgende coördinaten hebben een hoge')
-        print('uitstoot en zijn niet geregistreerd in')
-        print('bedrijven.txt, deze bedrijven stoten')
-        print('illegaal teveel slechte stoffen uit.')
-        print('Coördinaten: ')
-        for resultaat in resultaten:
-            uitstootTotaal = totaleUitstoot(resultaat[0], resultaat[1])
-            print(
-                f'{resultaat} - Boette: {Fore.GREEN}[€{berekenBoette(uitstootTotaal, 0)}] {Fore.RESET}Uitstoot: {Fore.RED}{round(uitstootTotaal, 2)}')
-        print('\nDe volgende bedrijven hebben hun maximum uitstoot overschreden:')
-        for uitstootResultaat in uitstootResultaten:
-            bedrijfsnaam = getBedrijvenMetXY(f'{uitstootResultaat[0]}', f'{uitstootResultaat[1]}', 'Naam')
-            uitstootMax = int(
-                getBedrijvenMetXY(f'{uitstootResultaat[0]}', f'{uitstootResultaat[1]}', 'Max Toegestane Uitstoot'))
-            uitstootTotaal = round(totaleUitstoot(uitstootResultaat[0], uitstootResultaat[1]), 2)
-            print(
-                f'{bedrijfsnaam} {uitstootResultaat} - Boette: {Fore.GREEN}[€{berekenBoette(uitstootTotaal, uitstootMax)}] {Fore.RESET}Uitstoot: {Fore.RED}{uitstootTotaal} / {uitstootMax}')
-    else:
-        print('Er zijn geen resultaten.')
-    print(f'\nDatum: {huidige_datum} Tijd: {huidige_tijd}')
-    print('Uitgifte: SchoneLucht BV.\n')
-    print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-')
+    with open(rapport_naam, 'w') as rapport_bestand:
+        rapport_bestand.write('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-Rapport-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n')
+        print("Resultaten:")
+        print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-Rapport-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n')
+
+        if resultaten:
+            print('De volgende coördinaten hebben een hoge\n'
+                  'uitstoot en zijn niet geregistreerd in\n'
+                  'bedrijven.txt, deze bedrijven stoten\n'
+                  'illegaal teveel slechte stoffen uit.\n'
+                  'Coördinaten: \n')
+            rapport_bestand.write('De volgende coördinaten hebben een hoge\n'
+                                  'uitstoot en zijn niet geregistreerd in\n'
+                                  'bedrijven.txt, deze bedrijven stoten\n'
+                                  'illegaal teveel slechte stoffen uit.\n'
+                                  'Coördinaten: \n')
+            for resultaat in resultaten:
+                uitstootTotaal = totaleUitstoot(resultaat[0], resultaat[1])
+                print(
+                    f'{resultaat} - Boette: [{Fore.GREEN}[€{berekenBoette(uitstootTotaal, 0)}] {Fore.RESET}Uitstoot: {Fore.RED}{round(uitstootTotaal, 2)}')
+                rapport_bestand.write(
+                    f'{resultaat} - Boette: €{berekenBoette(uitstootTotaal, 0)}] Uitstoot: {round(uitstootTotaal, 2)}\n')
+
+            print('\nDe volgende bedrijven hebben hun maximum uitstoot overschreden:\n')
+            rapport_bestand.write('\nDe volgende bedrijven hebben hun maximum uitstoot overschreden:\n')
+
+            for uitstootResultaat in uitstootResultaten:
+                bedrijfsnaam = getBedrijvenMetXY(f'{uitstootResultaat[0]}', f'{uitstootResultaat[1]}', 'Naam')
+                uitstootMax = int(
+                    getBedrijvenMetXY(f'{uitstootResultaat[0]}', f'{uitstootResultaat[1]}', 'Max Toegestane Uitstoot'))
+                uitstootTotaal = round(totaleUitstoot(uitstootResultaat[0], uitstootResultaat[1]), 2)
+                print(
+                    f'{bedrijfsnaam} {uitstootResultaat} - Boette: {Fore.GREEN}[€{berekenBoette(uitstootTotaal, uitstootMax)}] {Fore.RESET}Uitstoot: {Fore.RED}{uitstootTotaal} / {uitstootMax}')
+                rapport_bestand.write(
+                    f'{bedrijfsnaam} {uitstootResultaat} - Boette: [€{berekenBoette(uitstootTotaal, uitstootMax)}] Uitstoot: {uitstootTotaal} / {uitstootMax}\n')
+        else:
+            print('Er zijn geen resultaten.\n')
+            rapport_bestand.write('Er zijn geen resultaten.\n')
+
+        print(f'\nDatum: {huidige_datum} Tijd: {huidige_tijd}\n')
+        print('Uitgifte: SchoneLucht BV.\n')
+        print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-')
+        rapport_bestand.write(f'\n\nDatum: {huidige_datum} Tijd: {huidige_tijd}\n')
+        rapport_bestand.write('Uitgifte: SchoneLucht BV.\n')
+        rapport_bestand.write('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-')
+
+
+def toon_bestanden(map_pad):
+    """""Toont alle rapportbestanden.txt"""
+    bestanden = os.listdir(map_pad)
+    for index, bestand in enumerate(bestanden, start=1):
+        print(f"{index}. {bestand}")
+    return bestanden
+
+
+def lees_bestand(map_pad, bestandsnaam):
+    """"Leest een geselecteerd rapportbestand.txt in en print deze"""
+    bestandspad = os.path.join(map_pad, bestandsnaam)
+    with open(bestandspad, 'r') as bestand:
+        inhoud = bestand.read()
+        print(f"Inhoud van {bestandsnaam}:\n")
+        print(inhoud)
