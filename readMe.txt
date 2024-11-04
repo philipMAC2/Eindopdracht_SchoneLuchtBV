@@ -1,4 +1,4 @@
-README.TXT	PHILIP GORGIEVSKI	BELASTINGDIENST	2023	
+README.TXT	PHILIP xxxxxxxx	xxxxxxxxxxxx	2023	
 ====================================================
 INSTALLATIE:
 Voordat je de applicatie kunt runnen heb je de volgende
@@ -39,4 +39,4 @@ om de applicatie geautomatiseerd te laten runnen. Als je dit handmatig wilt doen
 kan je in de terminal van CMD: "python start.py" uitvoeren op de applicatie te runnen.
 
 Bij vragen kunt u mailen naar:
-p.gorgievski@belastingdienst.nl
+xxxxxxxx
